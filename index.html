@@ -10,7 +10,7 @@
 	</div>
 	<div>
 	<span id="spnEngine">vbscript</span>&gt;<input type="text"
-	name="txtInput" onKeyUp="eval_hist_flt()" style="width: 80%;color:#ffffff;background-color:#000000;border:0px"><button type="submit" name="btnExec"
+	name="txtInput" onKeyUp="eval_hist_flt()" style="width:80%;color:#ffffff;background-color:#000000;border:0px"><button type="submit" name="btnExec"
 	onclick="eval_btnExec()" style="color:#000000;background-color:#000000;border: 0px"><u>E</u>val</button>
 	</div>
 </body>
@@ -130,28 +130,7 @@
 		WriteHtmlEscaped("Commands:")
 		WriteHtmlEscaped("jscript - Switch to JScript")
 		WriteHtmlEscaped("vbscript - Switch to VBScript")
-		WriteHtmlEscaped("f - Download and run Firefox")
 		WriteHtmlEscaped("exit/quit/bye - Terminate")
-	End Function
-
-	Function Firefox()
-		dim xHttp: Set xHttp=createobject("Microsoft.XMLHTTP")
-		dim bStrm: Set bStrm=createobject("Adodb.Stream")
-		dim userp: userp=shell.ExpandEnvironmentStrings("%userprofile%")
-		dim ff115: ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
-
-		xHttp.Open "GET","https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115,False
-		xHttp.Send
-
-		with bStrm
-		    .type=1
-		    .open
-		    .write xHttp.responseBody
-		    .savetofile userp+"\Downloads\"+ff115,2
-		end with
-
-		WriteHtmlEscaped("Firefox has been downloaded. Running...")
-		shell.exec userp+"Downloads\"+ff115
 	End Function
 
 	Function eval_btnExec()
@@ -181,8 +160,6 @@
 			cmd = "Call Help()"
 		ElseIf utcmd = "CLS" Then
 			cmd = "Call Cls()"
-		ElseIf utcmd = "F" Then
-			cmd = "Call Firefox()"
 		ElseIf utcmd = "EXIT" Then
 			Call window.Close()
 		ElseIf utcmd = "QUIT" Then
@@ -216,7 +193,7 @@
 
 		If Err Then
 			spnResults.InnerHTML = spnResults.InnerHTML & _
-				"<div style=""font-weight:bold; color:red"">" & _
+				"<div style=""font-weight:bold;color:red"">" & _
 				"Error # " & Err.Number & _
 				": " & Err.Description & "</div>"
 			Call Err.Clear()
