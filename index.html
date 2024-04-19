@@ -57,8 +57,6 @@
 		Set oStream = CreateObject("SAPI.SpFileStream.1")
 		Call oStream.Open("C:\windows\media\ding.wav")
 
-		StartLanguage("vbscript")
-
 		Call txtInput.Focus()
 	End Function
 
@@ -139,21 +137,21 @@
 	Function Firefox()
 		dim xHttp: Set xHttp=createobject("Microsoft.XMLHTTP")
 		dim bStrm: Set bStrm=createobject("Adodb.Stream")
-		' dim userp: Set userp=shell.ExpandEnvironmentStrings("%userprofile%")
-		dim ff115: Set ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
+		dim userp: userp=shell.ExpandEnvironmentStrings("%userprofile%")
+		dim ff115: ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
 
-		xHttp.Open"GET","https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115,False
+		xHttp.Open "GET","https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115,False
 		xHttp.Send
 
 		with bStrm
 		    .type=1
 		    .open
 		    .write xHttp.responseBody
-		    .savetofile"C:\Users\Public\Downloads\"+ff115,2
+		    .savetofile userp+"\Downloads\"+ff115,2
 		end with
 
 		WriteHtmlEscaped("Firefox has been downloaded. Running...")
-		shell.exec"C:\Users\Public\Downloads\"+ff115
+		shell.exec userp+"Downloads\"+ff115
 	End Function
 
 	Function eval_btnExec()
