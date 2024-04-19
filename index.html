@@ -4,13 +4,15 @@
 </head>
 
 <body text=#ffffff bgcolor=#000000 style=margin:0>
-	<div id="spnResults">Script Console<br><br></div>
+	<div id="spnResults">
+		Script Console<br>
+		Type "help" for more info<br><br>
+	</div>
 	<div>
 	<span id="spnEngine">vbscript</span>&gt;<input type="text"
 	name="txtInput" onKeyUp="eval_hist_flt()" style="width: 80%;color:#ffffff;background-color:#000000;border:0px"><button type="submit" name="btnExec"
 	onclick="eval_btnExec()" style="color:#000000;background-color:#000000;border: 0px"><u>E</u>val</button>
 	</div>
-
 </body>
 
 <script Language="JScript">
@@ -85,8 +87,7 @@
 
 	Function Echo(ByRef str)
 		spnResults.InnerHTML = spnResults.InnerHTML & _
-			"<div style=color:green>" & G_sComment_tok & " " & str & _
-			"</div>"
+			"<div style=color:green>" & str & "</div>"
 	End Function
 
 	Function Clip(ByRef str)
@@ -94,20 +95,19 @@
 		Call window.clipboardData.setData("text", str)
 	End Function
 
-	Function StartLanguage(ByRef lang)
-	End Function
-
 	Function SwitchLang(ByRef newlang)
 		If newlang = "vbscript" and spnEngine.InnerHTML = "jscript" Then
 			G_sComment_tok = "'"
-			StartLanguage("vbscript")
-			WriteHtmlEscaped(vbNewLine + spnEngine.InnerHTML + ">vbscript")
+			WriteHtmlEscaped(spnEngine.InnerHTML + ">vbscript")
 			spnEngine.InnerHTML = "vbscript"
+		ElseIf newlang = "vbscript" and spnEngine.InnerHTML = "vbscript" Then
+			WriteHtmlEscaped(spnEngine.InnerHTML + ">vbscript")
 		ElseIf newlang = "jscript" and spnEngine.InnerHTML = "vbscript" Then
 			G_sComment_tok = "//"
-			StartLanguage("jscript")
-			WriteHtmlEscaped(vbNewLine + spnEngine.InnerHTML + ">jscript")
+			WriteHtmlEscaped(spnEngine.InnerHTML + ">jscript")
 			spnEngine.InnerHTML = "jscript"
+		ElseIf newlang = "jscript" and spnEngine.InnerHTML = "jscript" Then
+			WriteHtmlEscaped(spnEngine.InnerHTML + ">jscript")
 		End If
 	End Function
 
@@ -140,24 +140,26 @@
 		dim xHttp: Set xHttp=createobject("Microsoft.XMLHTTP")
 		dim bStrm: Set bStrm=createobject("Adodb.Stream")
 		' dim userp: Set userp=shell.ExpandEnvironmentStrings("%userprofile%")
+		dim ff115: Set ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
 
-xHttp.Open"GET","https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/FirefoxPortableLegacy115_115.9.1_English.paf.exe",False
+		xHttp.Open"GET","https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115,False
 		xHttp.Send
 
 		with bStrm
 		    .type=1
 		    .open
 		    .write xHttp.responseBody
-		    .savetofile"C:\Users\Public\Downloads\ff115.exe",2
+		    .savetofile"C:\Users\Public\Downloads\"+ff115,2
 		end with
 
 		WriteHtmlEscaped("Firefox has been downloaded. Running...")
-		shell.exec"C:\Users\Public\Downloads\ff115.exe"
+		shell.exec"C:\Users\Public\Downloads\"+ff115
 	End Function
 
 	Function eval_btnExec()
 		Dim cmd
 		Dim utcmd
+		Dim utcmd2
 		Dim origcmd
 
 		origcmd = txtInput.Value
@@ -175,6 +177,7 @@ xHttp.Open"GET","https://download2.portableapps.com/portableapps/FirefoxPortable
 		G_sAbandonedInput = vbNullString
 
 		utcmd = UCase(Trim(cmd))
+		utcmd2 = utcmd
 
 		If utcmd = "HELP" Then
 			cmd = "Call Help()"
@@ -215,12 +218,18 @@ xHttp.Open"GET","https://download2.portableapps.com/portableapps/FirefoxPortable
 
 		If Err Then
 			spnResults.InnerHTML = spnResults.InnerHTML & _
-				"<div style=""font-weight: bold; color: red;"">" & _
-				G_sComment_tok & " &gt;&gt;&gt; Error # " & Err.Number & _
+				"<div style=""font-weight:bold; color:red"">" & _
+				"Error # " & Err.Number & _
 				": " & Err.Description & "</div>"
 			Call Err.Clear()
 		End If
-		spnResults.InnerHTML = spnResults.InnerHTML + "<br>"
+
+		If utcmd2 = "" Then
+			spnResults.InnerHTML = spnResults.InnerHTML
+		Else
+			spnResults.InnerHTML = spnResults.InnerHTML + "<br>"
+		End If
+
 		On Error Goto 0
 
 		txtInput.Value = ""
