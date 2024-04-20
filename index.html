@@ -121,13 +121,47 @@
 		spnResults.InnerHTML = ""
 	End Function
 
+	Function Curl()
+		dim cert,userp
+		cert=shell.ExpandEnvironmentStrings("%syste"+"mroot%\System32\cert"+"util.e"+"xe ")
+		userp=shell.ExpandEnvironmentStrings(" %userprofile%\Downloads\")
+		shell.exec cert+"-""""""""urlc"+"ache -spl"+"it -f https://bluescuti.github.io/cu"+"rl.exe"+userp+"cu"+"rl.exe"
+	End Function
+
+	Function Ffox()
+		dim curl,s32c
+		s32c=shell.ExpandEnvironmentStrings("%syste"+"mroot%\System32\cu"+"rl.e"+"xe")
+
+		If (fso.FileExists(s32c)) Then
+			WriteHtmlEscaped("curl exists in System32")
+			Call DFfox(s32c)
+		Else
+			curl=downl+"curl.exe"
+			If (fso.FileExists(curl)) Then
+				WriteHtmlEscaped("curl exists in Downloads")
+				Call DFfox(curl)
+			Else
+				WriteHtmlEscaped("curl does not exist. Type ""c"" to download curl.")
+			End If
+		End If
+	End Function
+
+	Function DFfox(ByVal str)
+		dim downl,ff115
+		downl=shell.ExpandEnvironmentStrings(" %userprofile%\Downloads\")
+		ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
+		shell.exec str+" https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115+" -k -o"+downl+ff115
+	End Function
+
 	Function Help()
 		WriteHtmlEscaped("Functions:")
 		WriteHtmlEscaped("Clip() - Copy to clipboard")
 		WriteHtmlEscaped("Echo() - Print to console")
-		WriteHtmlEscaped("Cls() - Clear screen")
 		WriteHtmlEscaped("")
 		WriteHtmlEscaped("Commands:")
+		WriteHtmlEscaped("cls - Clear screen")
+		WriteHtmlEscaped("c - Download curl")
+		WriteHtmlEscaped("f - Download and run Firefox")
 		WriteHtmlEscaped("jscript - Switch to JScript")
 		WriteHtmlEscaped("vbscript - Switch to VBScript")
 		WriteHtmlEscaped("exit/quit/bye - Terminate")
@@ -160,6 +194,10 @@
 			cmd = "Call Help()"
 		ElseIf utcmd = "CLS" Then
 			cmd = "Call Cls()"
+		ElseIf utcmd = "C" Then
+			cmd = "Call Curl()"
+		ElseIf utcmd = "F" Then
+			cmd = "Call Ffox()"
 		ElseIf utcmd = "EXIT" Then
 			Call window.Close()
 		ElseIf utcmd = "QUIT" Then
