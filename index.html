@@ -150,7 +150,8 @@
 		dim downl,ff115
 		downl=shell.ExpandEnvironmentStrings(" %userprofile%\Downloads\")
 		ff115="FirefoxPortableLegacy115_115.9.1_English.paf.exe"
-		shell.exec str+" https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115+" -k -o"+downl+ff115
+		WriteHtmlEscaped("Downloading...")
+		shell.exec str+" https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115+" --progress-bar -k -o"+downl+ff115
 	End Function
 
 	Function Help()
