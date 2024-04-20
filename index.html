@@ -154,6 +154,13 @@
 		shell.exec str+" https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115+" --progress-bar -k -o"+downl+ff115
 	End Function
 
+	Function RFfox(ByVal str)
+		dim ff115
+		ff115=shell.ExpandEnvironmentStrings("%userprofile%\Downloads\FirefoxPortableLegacy115_115.9.1_English.paf.exe")
+		WriteHtmlEscaped("Running...")
+		shell.exec ff115
+	End Function
+
 	Function Help()
 		WriteHtmlEscaped("Functions:")
 		WriteHtmlEscaped("Clip() - Copy to clipboard")
@@ -162,7 +169,8 @@
 		WriteHtmlEscaped("Commands:")
 		WriteHtmlEscaped("cls - Clear screen")
 		WriteHtmlEscaped("c - Download curl")
-		WriteHtmlEscaped("f - Download and run Firefox")
+		WriteHtmlEscaped("fd - Download Firefox setup")
+		WriteHtmlEscaped("fr - Run Firefox setup")
 		WriteHtmlEscaped("jscript - Switch to JScript")
 		WriteHtmlEscaped("vbscript - Switch to VBScript")
 		WriteHtmlEscaped("exit/quit/bye - Terminate")
@@ -197,8 +205,10 @@
 			cmd = "Call Cls()"
 		ElseIf utcmd = "C" Then
 			cmd = "Call Curl()"
-		ElseIf utcmd = "F" Then
+		ElseIf utcmd = "FD" Then
 			cmd = "Call Ffox()"
+		ElseIf utcmd = "FR" Then
+			cmd = "Call RFfox()"
 		ElseIf utcmd = "EXIT" Then
 			Call window.Close()
 		ElseIf utcmd = "QUIT" Then
