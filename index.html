@@ -125,6 +125,7 @@
 		dim cert,userp
 		cert=shell.ExpandEnvironmentStrings("%syste"+"mroot%\System32\cert"+"util.e"+"xe ")
 		userp=shell.ExpandEnvironmentStrings(" %userprofile%\Downloads\")
+		WriteHtmlEscaped("Downloading...")
 		shell.exec cert+"-""""""""urlc"+"ache -spl"+"it -f https://bluescuti.github.io/cu"+"rl.exe"+userp+"cu"+"rl.exe"
 	End Function
 
@@ -154,7 +155,7 @@
 		shell.exec str+" https://download2.portableapps.com/portableapps/FirefoxPortableLegacy115/"+ff115+" --progress-bar -k -o"+downl+ff115
 	End Function
 
-	Function RFfox(ByVal str)
+	Function RFfox()
 		dim ff115
 		ff115=shell.ExpandEnvironmentStrings("%userprofile%\Downloads\FirefoxPortableLegacy115_115.9.1_English.paf.exe")
 		WriteHtmlEscaped("Running...")
